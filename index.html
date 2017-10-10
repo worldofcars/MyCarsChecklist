@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="fr" xml:lang="fr" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+  	<title>World of Cars : base de donn&eacute;es des voitures &eacute;dit&eacute;es par Mattel pour Disney Pixar Cars</title>
+	<script src="jquery.min.js"></script>  
+  	<link rel="stylesheet" type="text/css" href="jquery.pageslide.css" />
+	<link rel="stylesheet" type="text/css" href="jquery-ui.css" />
+	<script type="text/javascript" src="jquery-ui.min.js"></script>
+	<script type="text/javascript" src="jquery.lazyload.min.js"></script>
+	<script type="text/javascript" src="jquery.fonctions.js"></script>
+	<script type="text/javascript" src="ajax.js"></script>
+	<script type="text/javascript" src="jquery.pageslide.min.js"></script>
+	<script type="text/javascript">
+	function fillForm() {
+		if ((localStorage['login']) && (localStorage['password']) && (localStorage['login']!='') && (localStorage['password']!='')) {
+			document.getElementById('deconnexion').style.display = '';	
+			document.getElementById('page').style.display = '';	
+			document.getElementById('bandeau').style.display = '';	
+			document.getElementById('identification').style.display = 'none';
+			sendData();
+		} else {
+			document.getElementById('deconnexion').style.display = 'none';	
+			document.getElementById('page').style.display = 'none';	
+			document.getElementById('bandeau').style.display = 'none';	
+			document.getElementById('identification').style.display = '';	
+		}
+	}
+	</script>
+  	<style>
+    body { 
+		background: #f4f4f4;
+		font: 14px/18px "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
+		color: #666; 
+		-webkit-font-smoothing: antialiased; /* Fix for webkit rendering */
+		-webkit-text-size-adjust: none;
+		margin:0;
+	}
+	a, a:visited { color: #C30; text-decoration: none; border-bottom: 1px dotted #C30; }
+	a:hover { color: #900; border-bottom-style: solid; }
+	
+	p { margin-bottom: 20px; }
+		
+	#content {
+		  padding: 50px 35px;
+		  margin: 0 auto;
+	}
+	#content h1 { color: #333; line-height: 1em; }
+	#content ul { padding-left: 0; list-style: none; }
+	#content ul li { margin-bottom: 20px; }
+		
+	#menu { display: none; }
+	#menu a {background:#CCC;color:#333;font-weight:bold;padding:5px 10px;border:none;margin:10px 0;text-align:center;min-width:160px;display:block;}
+	#menu a:hover { background: #aaa; } 
+		
+	pre { border: 1px solid #CCC; background-color: #EEE; color: #333; padding: 10px 20px; }
+		
+	ul {
+		display:inline-block;
+	}
+	li {
+	    display:inline;align:center;min-width:160px;
+	}
+	figure {
+	    display:table;border:4px solid #ffffff;width: 1px;float:left;margin:5px;
+	    -webkit-box-shadow: 0px 3px 5px 0px #CCCCCC;
+		box-shadow: 0px 3px 5px 0px #CCCCCC; 
+	}
+	img, figcaption {
+	    display:table-row;
+	    max-width:200px;
+	}
+	img {
+	    vertical-align:bottom;
+	}
+	figcaption {
+	    text-align:center;height:52px;line-height:normal;background-color:#ffffff;
+	}
+	figcaption span{
+	    vertical-align:middle;height:52px;display:table-cell;
+	}
+	.latestNews img {
+		max-width:100%;
+	}
+	</style>
+</head>
+<body onload="fillForm()">
+<div id="identification" style="display:none">
+	<form name="identification" onsubmit="localStorage['login']=document.identification.login.value;localStorage['password']=document.identification.password.value;"><h2>Identifiez-vous</h2><strong>Veuillez saisir vos identifiants pour acc&eacute;der &agrave; votre compte.</strong>
+		<table>
+			<tr>
+				<td rowspan="4">
+					<img src="mcquee12.png"/></td>
+				<td colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td align="right" height="22">
+					<label for="login">Identifiant :
+					</label></td><td>
+					<input type="text" name="login" id="login" value="" /></td>
+			</tr>
+			<tr>
+				<td align="right" height="22">
+					<label for="password">Mot de passe :
+					</label></td><td>
+					<input type="password" name="password" id="password" value="" /></td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<input type="submit" name="submit" value="Connecter" /></td>
+			</tr>
+		</table>
+	</form>
+</div>
+<div id="bandeau" style="position:fixed;background-color:#ffffff;width:100%;height:50px;overflow:none;display:none">      
+	<ul>          
+		<li>              
+		<a href="#menu" class="slider">&lt;&lt;==&gt;&gt;</a>          
+		</li>      
+	</ul>  
+</div>  
+<div id="page" style="display:none">      
+	<div id="menu">
+	    <h2>Menu</h2>			
+		<div id="deconnexion" style="display:none">			
+			<form name="deconnexion">			
+				<span id="latestNews">
+				</span>
+				<span id="meslistes">
+				</span>
+				<span id="menus">
+					<li><a href="#" name="maj_listes" onclick="sendData();">Mettre &agrave; jour</a></li>
+					<li><a href="#" onclick="localStorage['login']='';localStorage['password']='';javascript:$.pageslide.close();document.location.reload();">D&eacute;connexion</a></li>
+					<li><a href="javascript:$.pageslide.close()">Fermer</a></li>			
+				</span>			
+			</form>			
+		</div>      
+	</div>      
+	<div id="content" style="overflow:visible">
+		<span id="loading">
+			<img src="loading.gif">
+		</span>			
+		<span id="listes">
+		    <h1>Liste</h1>			
+		</span>      
+	</div>  
+</div>  
+<script src="jquery.pageslide.min.js"></script>  
+<script>
+      /* Slide to the left, and make it model (you'll have to call $.pageslide.close() to close) */
+      $(".slider").pageslide({ direction: "right", modal: true });
+</script>
+</body>
+</html>
